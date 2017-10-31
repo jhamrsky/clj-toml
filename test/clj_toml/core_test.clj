@@ -3,6 +3,13 @@
         [clojure.instant :only [read-instant-timestamp]]
         clj-toml.core))
 
+(deftest whitespaces-test
+  (testing "Whitespaces"
+    (is (= (parse-string " \tblanks = \t\"whitespaces inside\tare preserved\"")
+           { "blanks" "whitespaces inside\tare preserved"}))
+    (is (= (parse-string "first = 1\nsecond = 2\r\nthird = 3")
+           { "first" 1 "second" 2 "third" 3}))))
+
 (deftest comment-test
   (testing "Comments"
     (is (= (parse-string "#just a comment line

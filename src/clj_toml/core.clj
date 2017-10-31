@@ -62,9 +62,9 @@
 
   identifier = #'[a-zA-Z0-9_-]+' 
 
-  <n> = <s*> <comment?> '\n'
+  <n> = <s*> <comment?> #'\n|\r\n'
   <comment> = #'#[^\n]*'
-  <s> = ' '
+  <s> = #' |\t'
   ")
 
 ;; TODO:
@@ -122,7 +122,7 @@
 (defn parse-string
   "Returns the Clojure object corresponding to the given TOML string."
   [^String string]
-  (->> (str string "\n") 
+  (->> (str string \newline)
     toml-parser
     toml-transform
     (reduce merge-entries {})))
